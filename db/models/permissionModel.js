@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const PermissionData = require("../../initial-data/PermissionData");
 
 const permissionSchema = mongoose.Schema({
   permission_id: {
@@ -43,15 +44,20 @@ const permissionSchema = mongoose.Schema({
 const permissionModel = mongoose.model("permission", permissionSchema);
 
 const saveData = async () => {
+  console.log("PermissionData", PermissionData);
   let totalData = await permissionModel.countDocuments();
   console.log("totalData 123456", totalData);
   if (totalData < 1) {
-    const permissionDoc = new permissionModel({
-      permission_id: "per100",
-      name: "Primary",
-      module_name: "Primary",
-    });
-    await permissionDoc.save();
+    for (let index = 0; index < PermissionData.length; index++) {
+      const element = PermissionData[index];
+
+      const permissionDoc = new permissionModel({
+        permission_id: element.permission_id,
+        name: element.name,
+        module_name: element.module_name,
+      });
+      await permissionDoc.save();
+    }
   }
 };
 saveData();
