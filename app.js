@@ -30,17 +30,21 @@ var whitelist = [
   "http://localhost:3000",
   "http://localhost:3001",
   "http://localhost:3002",
+  "http://localhost:3003",
 ];
 var corsOptions = {
+  // origin: "http://localhost:3003",
+
+  origin: function (origin, callback) {
+    console.log("origin", origin);
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
-  // origin: function (origin, callback) {
-  //   console.log("origin", origin);
-  //   if (whitelist.indexOf(origin) !== -1) {
-  //     callback(null, true);
-  //   } else {
-  //     callback(new Error("Not allowed by CORS"));
-  //   }
-  // },
+  optionSuccessStatus: 200,
 };
 // app.use(cors());
 
